@@ -11,22 +11,11 @@ public class Player : MonoBehaviour
     public double coinsPerClick;
 
     private double totalCoins = 0;
+    private int softResetNumber = 0;
     private Text coinsAmount;
     private Text coinsPerSecond;
 
-    public void AddCoins(double coins)
-    {
-        this.totalCoins += coins;
-        this.coinsAmount.text = this.FormatCoinsText(this.totalCoins);
-    }
-
-    public void SubtractCoins(double coins)
-    {
-        this.totalCoins -= coins;
-        this.coinsAmount.text = this.FormatCoinsText(this.totalCoins);
-    }
-
-    private IEnumerator AddCoinsPerSecond()
+    private IEnumerator AddClicksPerSecond()
     {
         double clicker_coins = this.numberOfClickers * this.clickerProduction;
         double fast_clicker_coins = this.numberOfFastClickers * this.fastClickerProduction;
@@ -38,13 +27,41 @@ public class Player : MonoBehaviour
                                      clicker_assembly_coins + 
                                      clicker_factory_coins + 
                                      clicker_university_coins;
+        total_coins_to_add += total_coins_to_add * 0.1 * this.softResetNumber;
 
         this.coinsPerSecond.text = this.FormatCoinsText(total_coins_to_add) + " clicks/s";
         this.AddCoins(total_coins_to_add);
 
         yield return new WaitForSeconds(1);
 
-        StartCoroutine(this.AddCoinsPerSecond());
+        StartCoroutine(this.AddClicksPerSecond());
+    }
+
+    private void AddCoins(double coins)
+    {
+        this.totalCoins += coins;
+        this.coinsAmount.text = this.FormatCoinsText(this.totalCoins);
+    }
+
+    private void SubtractCoins(double coins)
+    {
+        this.totalCoins -= coins;
+        this.coinsAmount.text = this.FormatCoinsText(this.totalCoins);
+    }
+
+    public void SoftReset()
+    {
+        if (this.totalCoins >= Math.Pow(10, 5 + this.softResetNumber))
+        {
+            this.softResetNumber++;
+
+            this.totalCoins = 0;
+            this.numberOfClickers = 0;
+            this.numberOfFastClickers = 0;
+            this.numberOfClickerAssemblies = 0;
+            this.numberOfClickerFactories = 0;
+            this.numberOfClickerUniversities = 0;
+        }
     }
     #endregion
 
@@ -188,12 +205,7 @@ public class Player : MonoBehaviour
         GameObject.Find("BuyClickerFactory").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerFactoryBaseCost) + " clicks";
         GameObject.Find("BuyClickerUniversity").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerUniversityBaseCost) + " clicks";
 
-        StartCoroutine(this.AddCoinsPerSecond());
-    }
-
-    private void OnMouseDown()
-    {
-        this.AddCoins(this.coinsPerClick);
+        StartCoroutine(this.AddClicksPerSecond());
     }
 
     private long calculateCost(long base_cost, int number)
@@ -244,5 +256,10 @@ public class Player : MonoBehaviour
         }
 
         return text;
+    }
+
+    public void AddCoinsFromButton()
+    {
+        this.AddCoins(this.coinsPerClick);
     }
 }
