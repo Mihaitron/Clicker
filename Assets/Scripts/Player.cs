@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [Header("Player")]
     public double coinsPerClick;
 
-    private double totalCoins = 0;
+    private double totalCoins = Math.Pow(10, 20);
     private int softResetNumber = 0;
     private Text coinsAmount;
     private Text coinsPerSecond;
@@ -22,11 +22,24 @@ public class Player : MonoBehaviour
         double clicker_assembly_coins = this.numberOfClickerAssemblies * this.clickerAssemblyProduction;
         double clicker_factory_coins = this.numberOfClickerFactories * this.clickerFactoryProduction;
         double clicker_university_coins = this.numberOfClickerUniversities * this.clickerUniversityProduction;
+        double clicker_city_coins = this.numberOfClickerCities * this.clickerCityProduction;
+        double clicker_country_coins = this.numberOfClickerCountries * this.clickerCountryProduction;
+        double clicker_rocket_coins = this.numberOfClickerRockets * this.clickerRocketProduction;
+        double clicker_planet_coins = this.numberOfClickerPlanets * this.clickerPlanetProduction;
+        double clicker_galaxy_coins = this.numberOfClickerGalaxies * this.clickerGalaxyProduction;
+        double clicker_universe_coins = this.numberOfClickerUniverses * this.clickerUniverseProduction;
         double total_coins_to_add = clicker_coins + 
                                      fast_clicker_coins + 
                                      clicker_assembly_coins + 
                                      clicker_factory_coins + 
-                                     clicker_university_coins;
+                                     clicker_university_coins +
+                                     clicker_city_coins +
+                                     clicker_country_coins +
+                                     clicker_rocket_coins + 
+                                     clicker_planet_coins +
+                                     clicker_galaxy_coins +
+                                     clicker_universe_coins;
+
         total_coins_to_add += total_coins_to_add * 0.1 * this.softResetNumber;
 
         this.coinsPerSecond.text = this.FormatCoinsText(total_coins_to_add) + " clicks/s";
@@ -61,6 +74,12 @@ public class Player : MonoBehaviour
             this.numberOfClickerAssemblies = 0;
             this.numberOfClickerFactories = 0;
             this.numberOfClickerUniversities = 0;
+            this.numberOfClickerCities = 0;
+            this.numberOfClickerCountries = 0;
+            this.numberOfClickerRockets = 0;
+            this.numberOfClickerPlanets = 0;
+            this.numberOfClickerGalaxies = 0;
+            this.numberOfClickerUniverses = 0;
         }
     }
     #endregion
@@ -194,6 +213,162 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region Clicker City
+    [Header("ClickerCity")]
+    public double clickerCityProduction = 1400f;
+
+
+    private long clickerCityBaseCost = 1400000;
+    private int numberOfClickerCities = 0;
+
+    public void BuyClickerCity()
+    {
+        long clicker_city_cost = this.calculateCost(this.clickerCityBaseCost, this.numberOfClickerCities);
+
+        if (this.totalCoins >= clicker_city_cost)
+        {
+            this.SubtractCoins(clicker_city_cost);
+            this.numberOfClickerCities++;
+
+            Debug.Log("You now have " + this.numberOfClickerCities + " clicker cities for " + clicker_city_cost);
+
+            long new_cost = this.calculateCost(this.clickerCityBaseCost, this.numberOfClickerCities);
+
+            GameObject.Find("BuyClickerCity").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(new_cost) + " clicks";
+        }
+    }
+    #endregion
+
+    #region Clicker Country
+    [Header("ClickerCountry")]
+    public double clickerCountryProduction = 7800f;
+
+
+    private long clickerCountryBaseCost = 20000000;
+    private int numberOfClickerCountries = 0;
+
+    public void BuyClickerCountry()
+    {
+        long clicker_country_cost = this.calculateCost(this.clickerCountryBaseCost, this.numberOfClickerCountries);
+
+        if (this.totalCoins >= clicker_country_cost)
+        {
+            this.SubtractCoins(clicker_country_cost);
+            this.numberOfClickerCountries++;
+
+            Debug.Log("You now have " + this.numberOfClickerCountries + " clicker countries for " + clicker_country_cost);
+
+            long new_cost = this.calculateCost(this.clickerCountryBaseCost, this.numberOfClickerCountries);
+
+            GameObject.Find("BuyClickerCountry").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(new_cost) + " clicks";
+        }
+    }
+    #endregion
+
+    #region Clicker Rocket
+    [Header("ClickerRocket")]
+    public double clickerRocketProduction = 44000f;
+
+
+    private long clickerRocketBaseCost = 330000000;
+    private int numberOfClickerRockets = 0;
+
+    public void BuyClickerRocket()
+    {
+        long clicker_rocket_cost = this.calculateCost(this.clickerRocketBaseCost, this.numberOfClickerRockets);
+
+        if (this.totalCoins >= clicker_rocket_cost)
+        {
+            this.SubtractCoins(clicker_rocket_cost);
+            this.numberOfClickerRockets++;
+
+            Debug.Log("You now have " + this.numberOfClickerRockets + " clicker rockets for " + clicker_rocket_cost);
+
+            long new_cost = this.calculateCost(this.clickerRocketBaseCost, this.numberOfClickerRockets);
+
+            GameObject.Find("BuyClickerRocket").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(new_cost) + " clicks";
+        }
+    }
+    #endregion
+
+    #region Clicker Planet
+    [Header("ClickerPlanet")]
+    public double clickerPlanetProduction = 260000f;
+
+
+    private long clickerPlanetBaseCost = 5100000000;
+    private int numberOfClickerPlanets = 0;
+
+    public void BuyClickerPlanet()
+    {
+        long clicker_planet_cost = this.calculateCost(this.clickerPlanetBaseCost, this.numberOfClickerPlanets);
+
+        if (this.totalCoins >= clicker_planet_cost)
+        {
+            this.SubtractCoins(clicker_planet_cost);
+            this.numberOfClickerPlanets++;
+
+            Debug.Log("You now have " + this.numberOfClickerPlanets + " clicker planets for " + clicker_planet_cost);
+
+            long new_cost = this.calculateCost(this.clickerPlanetBaseCost, this.numberOfClickerPlanets);
+
+            GameObject.Find("BuyClickerPlanet").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(new_cost) + " clicks";
+        }
+    }
+    #endregion
+
+    #region Clicker Galaxy
+    [Header("ClickerGalaxy")]
+    public double clickerGalaxyProduction = 1600000f;
+
+
+    private long clickerGalaxyBaseCost = 75000000000;
+    private int numberOfClickerGalaxies = 0;
+
+    public void BuyClickerGalaxy()
+    {
+        long clicker_galaxy_cost = this.calculateCost(this.clickerGalaxyBaseCost, this.numberOfClickerGalaxies);
+
+        if (this.totalCoins >= clicker_galaxy_cost)
+        {
+            this.SubtractCoins(clicker_galaxy_cost);
+            this.numberOfClickerGalaxies++;
+
+            Debug.Log("You now have " + this.numberOfClickerGalaxies + " clicker galaxies for " + clicker_galaxy_cost);
+
+            long new_cost = this.calculateCost(this.clickerGalaxyBaseCost, this.numberOfClickerGalaxies);
+
+            GameObject.Find("BuyClickerGalaxy").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(new_cost) + " clicks";
+        }
+    }
+    #endregion
+
+    #region Clicker Universe
+    [Header("ClickerUniverse")]
+    public double clickerUniverseProduction = 10000000f;
+
+
+    private long clickerUniverseBaseCost = 1000000000000;
+    private int numberOfClickerUniverses = 0;
+
+    public void BuyClickerUniverse()
+    {
+        long clicker_universe_cost = this.calculateCost(this.clickerUniverseBaseCost, this.numberOfClickerUniverses);
+
+        if (this.totalCoins >= clicker_universe_cost)
+        {
+            this.SubtractCoins(clicker_universe_cost);
+            this.numberOfClickerUniverses++;
+
+            Debug.Log("You now have " + this.numberOfClickerUniverses + " clicker universes for " + clicker_universe_cost);
+
+            long new_cost = this.calculateCost(this.clickerUniverseBaseCost, this.numberOfClickerUniverses);
+
+            GameObject.Find("BuyClickerUniverse").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(new_cost) + " clicks";
+        }
+    }
+    #endregion
+
     private void Start()
     {
         this.coinsAmount = GameObject.Find("CoinsAmount").GetComponent<Text>();
@@ -204,6 +379,12 @@ public class Player : MonoBehaviour
         GameObject.Find("BuyClickerAssembly").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerAssemblyBaseCost) + " clicks";
         GameObject.Find("BuyClickerFactory").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerFactoryBaseCost) + " clicks";
         GameObject.Find("BuyClickerUniversity").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerUniversityBaseCost) + " clicks";
+        GameObject.Find("BuyClickerCity").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerCityBaseCost) + " clicks";
+        GameObject.Find("BuyClickerCountry").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerCountryBaseCost) + " clicks";
+        GameObject.Find("BuyClickerRocket").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerRocketBaseCost) + " clicks";
+        GameObject.Find("BuyClickerPlanet").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerPlanetBaseCost) + " clicks";
+        GameObject.Find("BuyClickerGalaxy").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerGalaxyBaseCost) + " clicks";
+        GameObject.Find("BuyClickerUniverse").transform.GetChild(1).gameObject.GetComponent<Text>().text = this.FormatCoinsText(this.clickerUniverseBaseCost) + " clicks";
 
         StartCoroutine(this.AddClicksPerSecond());
     }
